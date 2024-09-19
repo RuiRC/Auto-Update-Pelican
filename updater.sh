@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Remove existing update.sh if it exists
+if [ -f update.sh ]; then
+    echo "Removing existing update.sh..."
+    rm update.sh
+fi
+
 # Pull the update commands directly
 echo "Downloading update commands..."
 if curl -L -o update.sh "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/update.sh"; then
