@@ -75,7 +75,6 @@ if [[ "$update_panel_response" == "yes" ]]; then
         # Clean up by removing the update.sh file
         echo "Cleaning up..."
         rm update.sh
-        reboot
     else
         echo "Failed to download update commands."
         exit 1
