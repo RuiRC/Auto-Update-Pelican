@@ -38,16 +38,18 @@ if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
         rm /tmp/updater_remote.sh  # Clean up the temporary file
         exit 1
     fi
+else
+    echo -e "${GREEN}No new updates to the updater script.${NC}"
 fi
 
 # Clean up the downloaded remote updater file
 rm /tmp/updater_remote.sh
 
-# Continue with updating the panel
-echo -e "${YELLOW}Would you like to continue updating the panel? ${YELLOW}(yes/no)${NC}"
-read -r continue_response
+# Ask about updating the panel
+echo -e "${YELLOW}Do you want to update the Panel? (yes/no)${NC}"
+read -r update_panel_response
 
-if [[ "$continue_response" == "yes" ]]; then
+if [[ "$update_panel_response" == "yes" ]]; then
     # Remove existing update.sh if it exists
     if [ -f update.sh ]; then
         echo "Removing existing update.sh..."
