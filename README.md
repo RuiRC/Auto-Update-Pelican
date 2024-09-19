@@ -2,7 +2,7 @@
 
 > **Disclaimer**: This script is based on the [official documentation](https://pelican.dev/docs/). Always refer to the docs as this script may not be up to date or applicable to your case.
 
-This script assumes that both the Panel and Wings are on the same machine running Debian.
+This script assumes that both the Panel and Wings are on the same machine running Ubuntu 24. This script will also assume that your permissions are for NGINX/Apache as per the documentation.
 
 ## Instructions
 
