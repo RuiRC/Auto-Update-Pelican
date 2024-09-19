@@ -3,9 +3,8 @@
 # Temporary file for update commands
 TEMP_UPDATE_FILE="/tmp/update.sh"
 
-# Pull the update commands directly into a temporary file
+# Pull the update commands directly into a temporary file from the new repo
 echo "Downloading update commands..."
-echo "Command: curl -L -o $TEMP_UPDATE_FILE https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"
 if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
     echo "Update commands downloaded successfully."
     
@@ -21,7 +20,8 @@ if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-
         exit 1
     fi
     
-    # Remove the temporary file
+    # Clean up by removing the temporary file
+    echo "Cleaning up..."
     rm "$TEMP_UPDATE_FILE"
 else
     echo "Failed to download update commands."
