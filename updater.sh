@@ -12,7 +12,8 @@ if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Updat
     chmod +x "$TEMP_UPDATE_FILE"
     
     # Run the update commands
-    if "$TEMP_UPDATE_FILE"; then
+    echo "Executing update commands..."
+    if bash "$TEMP_UPDATE_FILE"; then
         echo "Update commands executed successfully."
     else
         echo "Failed to execute update commands."
