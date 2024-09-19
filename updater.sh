@@ -28,45 +28,6 @@ if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
         if curl -L -o updater.sh "$REPO_UPDATER_URL"; then
             echo -e "${GREEN}Updater script downloaded successfully.${NC}"
             chmod +x updater.sh
-            
-            # Prompt to continue updating the panel
-            echo -e "${YELLOW}Would you like to continue updating the panel? ${YELLOW}(yes/no)${NC}"
-            read -r continue_response
-            
-            if [[ "$continue_response" == "yes" ]]; then
-                # Remove existing update.sh if it exists
-                if [ -f update.sh ]; then
-                    echo "Removing existing update.sh..."
-                    rm update.sh
-                fi
-
-                # Pull the update commands directly into a temporary file
-                echo "Downloading update commands..."
-                if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
-                    echo "Update commands downloaded successfully."
-                    
-                    # Make sure the temporary script is executable
-                    chmod +x "$TEMP_UPDATE_FILE"
-                    
-                    # Run the update commands
-                    echo "Executing update commands..."
-                    if bash "$TEMP_UPDATE_FILE"; then
-                        echo "Update commands executed successfully."
-                    else
-                        echo "Failed to execute update commands."
-                        exit 1
-                    fi
-                    
-                    # Clean up by removing the temporary file
-                    echo "Cleaning up..."
-                    rm "$TEMP_UPDATE_FILE"
-                else
-                    echo "Failed to download update commands."
-                    exit 1
-                fi
-            else
-                echo "Update to the panel was skipped."
-            fi
         else
             echo "Failed to download the updater script."
             rm /tmp/updater_remote.sh  # Clean up the temporary file
@@ -77,9 +38,16 @@ if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
         rm /tmp/updater_remote.sh  # Clean up the temporary file
         exit 1
     fi
-else
-    echo "No new updates available. Proceeding with the update commands."
+fi
 
+# Clean up the downloaded remote updater file
+rm /tmp/updater_remote.sh
+
+# Continue with updating the panel
+echo -e "${YELLOW}Would you like to continue updating the panel? ${YELLOW}(yes/no)${NC}"
+read -r continue_response
+
+if [[ "$continue_response" == "yes" ]]; then
     # Remove existing update.sh if it exists
     if [ -f update.sh ]; then
         echo "Removing existing update.sh..."
@@ -110,7 +78,6 @@ else
         echo "Failed to download update commands."
         exit 1
     fi
+else
+    echo "Update to the panel was skipped."
 fi
-
-# Clean up the downloaded remote updater file
-rm /tmp/updater_remote.sh
