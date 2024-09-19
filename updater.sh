@@ -20,7 +20,7 @@ self_update() {
     echo "Checking for script updates..."
     if curl -L -o "$0" "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/updater.sh"; then
         print_success "Updater script updated successfully."
-        exec bash "$0" # Restart the updater script
+        return
     else
         print_error "Failed to update the updater script."
         exit 1
