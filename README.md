@@ -21,7 +21,7 @@ This script assumes that both the Panel and Wings are on the same machine runnin
 3. (Optional) Add an alias for the update script:
 
     ```bash
-    echo "alias update='~/update.sh'" >> ~/.bashrc
+    echo "alias update='~/updater.sh'" >> ~/.bashrc
     ```
 
 4. Apply the changes to your shell:
