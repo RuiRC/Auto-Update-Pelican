@@ -46,7 +46,7 @@ fi
 rm /tmp/updater_remote.sh
 
 # Ask about updating the panel
-echo -e "${YELLOW}Do you want to update the Panel? (yes/no)${NC}"
+echo -e "${YELLOW}Do you want to continue the update? (yes/no)${NC}"
 read -r update_panel_response
 
 if [[ "$update_panel_response" == "yes" ]]; then
@@ -81,5 +81,5 @@ if [[ "$update_panel_response" == "yes" ]]; then
         exit 1
     fi
 else
-    echo "Update to the panel was skipped."
+    echo "Update was skipped."
 fi
