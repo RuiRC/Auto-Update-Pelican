@@ -87,6 +87,13 @@ else
     echo "Update was skipped."
 fi
 
-# Reboot the machine after cleanup
-echo "Rebooting the machine..."
-sudo reboot
+# Prompt the user about rebooting the machine
+echo -e "${YELLOW}Would you like to reboot the machine now? (yes/no)${NC}"
+read -r reboot_response
+
+if [[ "$reboot_response" == "yes" ]]; then
+    echo "Rebooting the machine..."
+    sudo reboot
+else
+    echo "Reboot was skipped."
+fi
