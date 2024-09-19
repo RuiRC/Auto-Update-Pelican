@@ -29,7 +29,7 @@ update_panel() {
     echo "Updating Pelican Panel..."
     
     # Enter maintenance mode
-    cd /var/www/pelican
+    cd /var/www/pelican || exit
     php artisan down
     
     # Download and extract the latest panel update
@@ -112,7 +112,7 @@ update_wings() {
     fi
     
     # Download the latest Wings binary
-    if curl -L -o /usr/local/bin/wings "https://github.com/pelican-dev/wings/releases/latest/download/wings_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")";then
+    if curl -L -o /usr/local/bin/wings "https://github.com/pelican-dev/wings/releases/latest/download/wings_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")"; then
         print_success "Downloaded the latest Wings binary."
     else
         print_error "Failed to download the latest Wings binary."
@@ -140,8 +140,21 @@ update_wings() {
 
 # Main update function
 update() {
-    update_panel
-    update_wings
+    # Ask if the user wants to update the Panel
+    read -p "Would you like to update the Pelican Panel? (yes/no): " panel_response
+    if [[ "$panel_response" == "yes" ]]; then
+        update_panel
+    else
+        echo "Skipped updating the Pelican Panel."
+    fi
+
+    # Ask if the user wants to update the Wings
+    read -p "Would you like to update the Pelican Wings? (yes/no): " wings_response
+    if [[ "$wings_response" == "yes" ]]; then
+        update_wings
+    else
+        echo "Skipped updating the Pelican Wings."
+    fi
 }
 
 # Run the update function
