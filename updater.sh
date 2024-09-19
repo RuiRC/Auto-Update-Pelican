@@ -1,12 +1,16 @@
 #!/bin/bash
 
+# Enable ANSI color support
+export TERM=xterm
+
 # Define colors for messages
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# URL for the updater script in the repository
+# Define the temporary file for update commands
+TEMP_UPDATE_FILE="/tmp/update.sh"
 REPO_UPDATER_URL="https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/updater.sh"
 
 # Check for updates to this script
@@ -55,26 +59,26 @@ if [[ "$update_panel_response" == "yes" ]]; then
         rm update.sh
     fi
 
-    # Pull the update commands directly into update.sh
+    # Pull the update commands directly into a temporary file
     echo "Downloading update commands..."
-    if curl -L -o update.sh "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
+    if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
         echo "Update commands downloaded successfully."
         
-        # Make sure the script is executable
-        chmod +x update.sh
+        # Make sure the temporary script is executable
+        chmod +x "$TEMP_UPDATE_FILE"
         
         # Run the update commands
         echo "Executing update commands..."
-        if bash update.sh; then
+        if bash "$TEMP_UPDATE_FILE"; then
             echo "Update commands executed successfully."
         else
             echo "Failed to execute update commands."
             exit 1
         fi
         
-        # Clean up by removing the update.sh file
+        # Clean up by removing the temporary file
         echo "Cleaning up..."
-        rm update.sh
+        rm "$TEMP_UPDATE_FILE"
     else
         echo "Failed to download update commands."
         exit 1
