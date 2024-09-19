@@ -1,26 +1,26 @@
 #!/bin/bash
 
-# Remove existing update.sh if it exists
-if [ -f update.sh ]; then
-    echo "Removing existing update.sh..."
-    rm update.sh
-fi
+# Temporary file for update commands
+TEMP_UPDATE_FILE="/tmp/update.sh"
 
-# Pull the update commands directly
+# Pull the update commands directly into a temporary file
 echo "Downloading update commands..."
-if curl -L -o update.sh "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/update.sh"; then
+if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/update.sh"; then
     echo "Update commands downloaded successfully."
     
-    # Make sure the script is executable
-    chmod +x update.sh
+    # Make sure the temporary script is executable
+    chmod +x "$TEMP_UPDATE_FILE"
     
     # Run the update commands
-    if ./update.sh; then
+    if "$TEMP_UPDATE_FILE"; then
         echo "Update commands executed successfully."
     else
         echo "Failed to execute update commands."
         exit 1
     fi
+    
+    # Remove the temporary file
+    rm "$TEMP_UPDATE_FILE"
 else
     echo "Failed to download update commands."
     exit 1
