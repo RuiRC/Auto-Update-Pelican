@@ -18,19 +18,13 @@ This script assumes that both the Panel and Wings are on the same machine runnin
     chmod +x updater.sh
     ```
 
-3. Run the updater script to pull the update commands and execute them:
-
-    ```bash
-    ./updater.sh
-    ```
-
-4. (Optional) Add an alias for the update script:
+3. (Optional) Add an alias for the update script:
 
     ```bash
     echo "alias update='~/update.sh'" >> ~/.bashrc
     ```
 
-5. Apply the changes to your shell:
+4. Apply the changes to your shell:
 
     ```bash
     source ~/.bashrc
