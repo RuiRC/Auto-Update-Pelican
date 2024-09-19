@@ -18,9 +18,10 @@ print_error() {
 # Function to update itself
 self_update() {
     echo "Checking for script updates..."
-    if curl -L -o "$0" "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/updater.sh"; then
+    if curl -L -o "$0.tmp" "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/updater.sh"; then
         print_success "Updater script updated successfully."
-        return
+        mv "$0.tmp" "$0"  # Replace the old script with the new version
+        exec bash "$0"     # Restart the script with the updated version
     else
         print_error "Failed to update the updater script."
         exit 1
