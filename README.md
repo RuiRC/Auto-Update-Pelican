@@ -9,7 +9,7 @@ This script assumes that both the Panel and Wings are on the same machine runnin
 1. Download the updater script using `curl`:
 
     ```bash
-    curl -L -o updater.sh https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/updater.sh
+    curl -L -o updater.sh https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/updater.sh
     ```
 
 2. Make the updater script executable:
