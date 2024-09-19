@@ -5,8 +5,8 @@ TEMP_UPDATE_FILE="/tmp/update.sh"
 
 # Pull the update commands directly into a temporary file
 echo "Downloading update commands..."
-echo "Command: curl -L -o $TEMP_UPDATE_FILE https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/update.sh"
-if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Update-Pelican/main/update.sh"; then
+echo "Command: curl -L -o $TEMP_UPDATE_FILE https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"
+if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
     echo "Update commands downloaded successfully."
     
     # Make sure the temporary script is executable
