@@ -66,10 +66,11 @@ if [[ "$auto_update_response" == "yes" ]]; then
 
         # Run the update commands
         echo "Executing update commands..."
-        if sudo bash "$TEMP_UPDATE_FILE"; then
+        if sudo bash "$TEMP_UPDATE_FILE" --auto; then
             echo "Update commands executed successfully."
         else
             echo "Failed to execute update commands."
+            rm "$TEMP_UPDATE_FILE"  # Clean up the temporary file
             exit 1
         fi
 
