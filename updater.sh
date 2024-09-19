@@ -12,34 +12,34 @@ REPO_UPDATER_URL="https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/ma
 
 # Check for updates to this script
 echo "Checking for updates to the updater script..."
-if ! curl -s -o /tmp/updater_remote.sh "$REPO_UPDATER_URL"; then
-    echo "Failed to download the updater script from the repository."
-    exit 1
-fi
+if curl -s -o /tmp/updater_remote.sh "$REPO_UPDATER_URL"; then
+    # Compare the local updater.sh with the remote version
+    if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
+        echo -e "${RED}The updater script has been modified. Would you like to download the latest version automatically? ${YELLOW}(yes/no)${NC}"
+        read -r response
 
-# Compare the local updater.sh with the remote version
-if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
-    echo -e "${RED}The updater script has been modified. Would you like to download the latest version automatically? ${YELLOW}(yes/no)${NC}"
-    read -r response
-
-    if [[ "$response" == "yes" ]]; then
-        echo "Downloading the latest updater script..."
-        mv updater.sh updater.sh.bak  # Backup the old version
-        if curl -L -o updater.sh "$REPO_UPDATER_URL"; then
-            echo -e "${GREEN}Updater script downloaded successfully.${NC}"
-            chmod +x updater.sh
+        if [[ "$response" == "yes" ]]; then
+            echo "Downloading the latest updater script..."
+            mv updater.sh updater.sh.bak  # Backup the old version
+            if curl -L -o updater.sh "$REPO_UPDATER_URL"; then
+                echo -e "${GREEN}Updater script downloaded successfully.${NC}"
+                chmod +x updater.sh
+            else
+                echo "Failed to download the updater script."
+                rm /tmp/updater_remote.sh  # Clean up the temporary file
+                exit 1
+            fi
         else
-            echo "Failed to download the updater script."
+            echo -e "${RED}Please download the latest version manually at: https://github.com/RuiRC/Auto-Update-Pelican${NC}"
             rm /tmp/updater_remote.sh  # Clean up the temporary file
             exit 1
         fi
     else
-        echo -e "${RED}Please download the latest version manually at: https://github.com/RuiRC/Auto-Update-Pelican${NC}"
-        rm /tmp/updater_remote.sh  # Clean up the temporary file
-        exit 1
+        echo -e "${GREEN}No new updates available for the updater script.${NC}"
     fi
 else
-    echo -e "${GREEN}No new updates available for the updater script.${NC}"
+    echo "Failed to download the updater script from the repository."
+    exit 1
 fi
 
 # Clean up the downloaded remote updater file
