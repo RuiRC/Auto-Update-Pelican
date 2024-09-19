@@ -142,7 +142,8 @@ update_wings() {
 # Main update function
 update() {
     # Ask if the user wants to update the Panel
-    read -p "${YELLOW}Would you like to update the Pelican Panel? (yes/no): ${NC}" panel_response
+    echo -e "${YELLOW}Would you like to update the Pelican Panel? (yes/no): ${NC}"
+    read -r panel_response
     if [[ "$panel_response" == "yes" ]]; then
         update_panel
     else
@@ -150,7 +151,8 @@ update() {
     fi
 
     # Ask if the user wants to update the Wings
-    read -p "${YELLOW}Would you like to update the Pelican Wings? (yes/no): ${NC}" wings_response
+    echo -e "${YELLOW}Would you like to update the Pelican Wings? (yes/no): ${NC}"
+    read -r wings_response
     if [[ "$wings_response" == "yes" ]]; then
         update_wings
     else
