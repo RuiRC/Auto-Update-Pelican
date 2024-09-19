@@ -39,7 +39,7 @@ if ! diff -q updater.sh /tmp/updater_remote.sh > /dev/null; then
         exit 1
     fi
 else
-    echo -e "${GREEN}No new updates to the updater script.${NC}"
+    echo -e "${GREEN}No new updates available for the updater script.${NC}"
 fi
 
 # Clean up the downloaded remote updater file
