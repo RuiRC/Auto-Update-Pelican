@@ -1,4 +1,4 @@
-# Simple Script to Update Pelican Panel
+# Simple Script to Update Pelican Panel and Wings
 
 > **Disclaimer**: This script is based on the [official documentation](https://pelican.dev/docs/). Always refer to the docs as this script may not be up to date or applicable to your case.
 
