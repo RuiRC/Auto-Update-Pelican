@@ -7,11 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Define the temporary file for update commands
-TEMP_UPDATE_FILE="/tmp/update.sh"
 REPO_UPDATER_URL="https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/updater.sh"
-
-# Export TERM for proper color output
-export TERM=xterm
 
 # Check for updates to this script
 echo "Checking for updates to the updater script..."
@@ -23,10 +19,10 @@ if curl -s -o /tmp/updater_remote.sh "$REPO_UPDATER_URL"; then
 
         if [[ "$response" == "yes" ]]; then
             echo "Downloading the latest updater script..."
-            sudo mv updater.sh updater.sh.bak  # Backup the old version
+            mv updater.sh updater.sh.bak  # Backup the old version
             if curl -L -o updater.sh "$REPO_UPDATER_URL"; then
                 echo -e "${GREEN}Updater script downloaded successfully.${NC}"
-                sudo chmod +x updater.sh
+                chmod +x updater.sh
             else
                 echo "Failed to download the updater script."
                 rm /tmp/updater_remote.sh  # Clean up the temporary file
@@ -48,52 +44,61 @@ fi
 # Clean up the downloaded remote updater file
 rm /tmp/updater_remote.sh
 
-# Ask about updating the panel
-echo -e "${YELLOW}Do you want to continue the update? (yes/no)${NC}"
-read -r update_panel_response
+# Ask if the user wants to update automatically
+echo -e "${YELLOW}Do you want to perform updates automatically? (yes/no)${NC}"
+read -r auto_update_response
 
-if [[ "$update_panel_response" == "yes" ]]; then
-    # Remove existing update.sh if it exists
-    if [ -f update.sh ]; then
-        echo "Removing existing update.sh..."
-        sudo rm update.sh
-    fi
+if [[ "$auto_update_response" == "yes" ]]; then
+    echo "Automatic update mode enabled."
+    ./update.sh --auto
+else
+    # Ask about updating the panel
+    echo -e "${YELLOW}Do you want to continue the update? (yes/no)${NC}"
+    read -r update_panel_response
 
-    # Pull the update commands directly into a temporary file
-    echo "Downloading update commands..."
-    if curl -L -o "$TEMP_UPDATE_FILE" "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
-        echo "Update commands downloaded successfully."
-        
-        # Make sure the temporary script is executable
-        sudo chmod +x "$TEMP_UPDATE_FILE"
-        
-        # Run the update commands
-        echo "Executing update commands..."
-        if sudo bash "$TEMP_UPDATE_FILE"; then
-            echo "Update commands executed successfully."
+    if [[ "$update_panel_response" == "yes" ]]; then
+        # Remove existing update.sh if it exists
+        if [ -f update.sh ]; then
+            echo "Removing existing update.sh..."
+            rm update.sh
+        fi
+
+        # Pull the update commands directly into a temporary file
+        echo "Downloading update commands..."
+        if curl -L -o update.sh "https://raw.githubusercontent.com/RuiRC/Auto-Update-Pelican/main/update.sh"; then
+            echo "Update commands downloaded successfully."
+
+            # Make sure the temporary script is executable
+            chmod +x update.sh
+
+            # Run the update commands
+            echo "Executing update commands..."
+            if sudo bash update.sh; then
+                echo "Update commands executed successfully."
+            else
+                echo "Failed to execute update commands."
+                exit 1
+            fi
+
+            # Clean up by removing the temporary file
+            echo "Cleaning up..."
+            rm update.sh
+
+            # Prompt user for reboot
+            echo -e "${YELLOW}Would you like to reboot the machine now? (yes/no)${NC}"
+            read -r reboot_response
+
+            if [[ "$reboot_response" == "yes" ]]; then
+                echo "Rebooting the machine..."
+                sudo reboot
+            else
+                echo "Reboot skipped. Please reboot manually when convenient."
+            fi
         else
-            echo "Failed to execute update commands."
+            echo "Failed to download update commands."
             exit 1
         fi
-        
-        # Clean up by removing the temporary file
-        echo "Cleaning up..."
-        sudo rm "$TEMP_UPDATE_FILE"
     else
-        echo "Failed to download update commands."
-        exit 1
+        echo "Update was skipped."
     fi
-else
-    echo "Update was skipped."
-fi
-
-# Prompt the user about rebooting the machine
-echo -e "${YELLOW}Would you like to reboot the machine now? (yes/no)${NC}"
-read -r reboot_response
-
-if [[ "$reboot_response" == "yes" ]]; then
-    echo "Rebooting the machine..."
-    sudo reboot
-else
-    echo "Reboot was skipped."
 fi
