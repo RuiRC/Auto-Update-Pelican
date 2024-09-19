@@ -3,6 +3,7 @@
 # Colors for echo
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+YELLOW='\033[1;33m'  # Yellow for prompts
 NC='\033[0m' # No Color
 
 # Function to print success message
@@ -141,7 +142,7 @@ update_wings() {
 # Main update function
 update() {
     # Ask if the user wants to update the Panel
-    read -p "Would you like to update the Pelican Panel? (yes/no): " panel_response
+    read -p "${YELLOW}Would you like to update the Pelican Panel? (yes/no): ${NC}" panel_response
     if [[ "$panel_response" == "yes" ]]; then
         update_panel
     else
@@ -149,7 +150,7 @@ update() {
     fi
 
     # Ask if the user wants to update the Wings
-    read -p "Would you like to update the Pelican Wings? (yes/no): " wings_response
+    read -p "${YELLOW}Would you like to update the Pelican Wings? (yes/no): ${NC}" wings_response
     if [[ "$wings_response" == "yes" ]]; then
         update_wings
     else
