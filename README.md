@@ -1,6 +1,6 @@
 # Simple Script to Update Pelican Panel
 
-> **Disclaimer**: This script is based on the docs. Always refer to the official documentation as this script may not be up to date or applicable to your case.
+> **Disclaimer**: This script is based on the [official documentation](https://pelican.dev/docs/). Always refer to the docs as this script may not be up to date or applicable to your case.
 
 This script assumes that both the Panel and Wings are on the same machine running Debian.
 
